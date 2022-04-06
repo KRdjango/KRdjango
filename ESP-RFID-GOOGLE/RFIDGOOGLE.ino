@@ -162,14 +162,20 @@ void loop() {
     CloseGate();
   }
 
-
-  if (!mfrc522.PICC_IsNewCardPresent()) {
-    return;
-  }
+// em-18 module stuff
+  if (Serial.available())
+  {
+    count = 0;
+    while (Serial.available() && count < 12)
+    {
+      input[count] = Serial.read();
+      count++;
+      delay(5);
+    }
 
   // Select one of the cards
   // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
-  if (!mfrc522.PICC_ReadCardSerial()) {
+  if (!Serial.available()) {
     return;
   }
   Serial.println(F("Scanned PICC's UID:"));
